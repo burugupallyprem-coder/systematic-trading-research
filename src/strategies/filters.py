@@ -67,3 +67,28 @@ def top_k_symbols(rs_by_symbol, k):
         return set(rs_by_symbol or {})
     ranked = sorted(rs_by_symbol.items(), key=lambda kv: kv[1], reverse=True)
     return {sym for sym, _ in ranked[:int(k)]}
+
+
+def spy_short_ok(spy_day, open_bars, cutoff_et):
+    """Mirror of spy_long_ok: True if SPY closes BELOW its opening-range low before
+    cutoff (the broad market is breaking DOWN) - the regime gate for SHORTS."""
+    if spy_day is None or len(spy_day) < open_bars + 1:
+        return False
+    rng = spy_day.iloc[:open_bars]
+    lo = float(rng["low"].min())
+    ch, cm = [int(x) for x in cutoff_et.split(":")]
+    for i in range(open_bars, len(spy_day)):
+        row = spy_day.iloc[i]
+        if _bar_time_ge(row, ch, cm):
+            break
+        if float(row["close"]) < lo:
+            return True
+    return False
+
+
+def bottom_k_symbols(rs_by_symbol, k):
+    """Names with the LOWEST relative-strength (weakest vs SPY) - the short candidates."""
+    if not rs_by_symbol or k is None:
+        return set(rs_by_symbol or {})
+    ranked = sorted(rs_by_symbol.items(), key=lambda kv: kv[1])   # weakest first
+    return {sym for sym, _ in ranked[:int(k)]}
