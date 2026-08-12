@@ -19,10 +19,10 @@ from src import slackbot
 from src.backtest import research
 from src.backtest.ttp_eval import live_daily_returns
 
-STARTS = [0.0020, 0.0025]          # starting per-trade risk (fraction): 0.20%, 0.25%
+STARTS = [0.0025, 0.0030, 0.0035, 0.0040, 0.0050]   # start per-trade risk: 0.25% .. 0.50%
 TARGET, MAXLOSS, DAILYCAP = 0.06, 0.04, 0.02
 MINPD, CONSIST, HORIZON = 3, 0.50, 756
-CAP = 0.0060                       # never risk more than 0.60% even fully cushioned
+CAP = 0.0050                       # ratchet ramps up to 0.50% once fully cushioned
 
 
 def _risk(eq, r0, ratchet):
