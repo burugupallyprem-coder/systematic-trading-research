@@ -73,19 +73,31 @@ def rth_only(df):
     return out.reset_index(drop=True)
 
 def fetch_bars_hist(symbols, start, end, timeframe="5Min", feed="sip", limit=10000, max_pages=5000):
-    """Long-history fetch: pull each symbol SEPARATELY and concatenate. The multi-symbol
-    batch fetch truncates deep history (it stopped at 2020-07 for the full universe), but a
-    single-symbol pull returns the full range - so this reaches pre-COVID / COVID-crash bars."""
+    """Long-history fetch: pull each symbol SEPARATELY and, for each, try BOTH feeds and keep
+    whichever reaches furthest back. SIP entitlement varies per symbol on the free plan (some
+    silently fall back to IEX, which caps ~2020-07), so trying sip AND iex is what actually
+    reaches the pre-COVID / COVID-crash bars. Logs the earliest date per symbol so the CI run
+    shows exactly how far back each symbol goes."""
+    feeds = [feed, "iex" if feed != "iex" else "sip"]
     frames = []
     for sym in symbols:
-        try:
-            b = fetch_bars([sym], start, end, timeframe=timeframe, feed=feed,
-                           limit=limit, max_pages=max_pages)
-            if len(b):
-                frames.append(b)
-        except Exception as e:
-            print(f"[fetch_bars_hist] {sym} failed: {e}", flush=True)
+        best = None
+        for fd in feeds:
+            try:
+                b = fetch_bars([sym], start, end, timeframe=timeframe, feed=fd,
+                               limit=limit, max_pages=max_pages)
+            except Exception as e:
+                print(f"[fetch_bars_hist] {sym} feed={fd} failed: {e}", flush=True)
+                continue
+            if len(b) and (best is None or b["ts"].min() < best["ts"].min()):
+                best = b
+        if best is not None:
+            print(f"[fetch_bars_hist] {sym}: {len(best):>7} bars, earliest {best['ts'].min().date()}", flush=True)
+            frames.append(best)
+        else:
+            print(f"[fetch_bars_hist] {sym}: NO DATA on any feed", flush=True)
     if not frames:
         return pd.DataFrame(columns=["symbol", "ts", "open", "high", "low", "close", "volume"])
-    return pd.concat(frames, ignore_index=True).sort_values(["symbol", "ts"]).reset_index(drop=True)
+    out = pd.concat(frames, ignore_index=True)
+    return out.drop_duplicates(["symbol", "ts"]).sort_values(["symbol", "ts"]).reset_index(drop=True)
 
