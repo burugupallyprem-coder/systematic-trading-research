@@ -16,14 +16,14 @@ from src.backtest.ttp_eval import sweep
 FLEX = dict(target=0.06, daily_lim=0.02, max_loss=0.04, consist=0.50, min_pdays=3, horizon=252)
 
 
-def _daily(cfg, start="2016-01-01"):
+def _daily(cfg, start="2018-01-01"):
     live = cfg["live"]; params = dict(live["params"])
     ob = int(cfg["research"].get("regime_open_bars", 3))
     cutoff = params.get("cutoff_et", "10:30")
     k = params.get("rs_topk")
     risk_pct = float(cfg["risk"]["risk_pct"]) / 100.0
     end = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    bars = data_mod.fetch_bars(cfg["universe"], start, end,
+    bars = data_mod.fetch_bars_hist(cfg["universe"], start, end,
                                timeframe=cfg["backtest"]["timeframe"], feed=cfg["backtest"]["feed"])
     bars = data_mod.rth_only(bars)
     groups = research.day_groups(bars)

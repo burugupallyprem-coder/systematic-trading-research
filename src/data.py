@@ -71,3 +71,21 @@ def rth_only(df):
     out["et"] = et[mask]
     out["date"] = out["et"].dt.date
     return out.reset_index(drop=True)
+
+def fetch_bars_hist(symbols, start, end, timeframe="5Min", feed="sip", limit=10000, max_pages=5000):
+    """Long-history fetch: pull each symbol SEPARATELY and concatenate. The multi-symbol
+    batch fetch truncates deep history (it stopped at 2020-07 for the full universe), but a
+    single-symbol pull returns the full range - so this reaches pre-COVID / COVID-crash bars."""
+    frames = []
+    for sym in symbols:
+        try:
+            b = fetch_bars([sym], start, end, timeframe=timeframe, feed=feed,
+                           limit=limit, max_pages=max_pages)
+            if len(b):
+                frames.append(b)
+        except Exception as e:
+            print(f"[fetch_bars_hist] {sym} failed: {e}", flush=True)
+    if not frames:
+        return pd.DataFrame(columns=["symbol", "ts", "open", "high", "low", "close", "volume"])
+    return pd.concat(frames, ignore_index=True).sort_values(["symbol", "ts"]).reset_index(drop=True)
+

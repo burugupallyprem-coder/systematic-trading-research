@@ -22,7 +22,7 @@ def live_daily_returns(cfg, start=None, end=None):
     end = end or rs.get("val_end") or datetime.now(timezone.utc).strftime("%Y-%m-%d")
     start = start or rs["train_start"]
     risk_pct = float(cfg["risk"]["risk_pct"]) / 100.0            # 0.5 -> 0.005
-    bars = data_mod.fetch_bars(cfg["universe"], start, end,
+    bars = data_mod.fetch_bars_hist(cfg["universe"], start, end,
                                timeframe=cfg["backtest"]["timeframe"], feed=cfg["backtest"]["feed"])
     bars = data_mod.rth_only(bars)
     groups = research.day_groups(bars)

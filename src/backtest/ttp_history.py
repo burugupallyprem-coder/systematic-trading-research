@@ -38,7 +38,7 @@ def _flex_pass(r):
 
 def run():
     cfg = research.load_config()
-    daily = live_daily_returns(cfg, start="2016-01-01")           # ~10yr, whatever Alpaca gives
+    daily = live_daily_returns(cfg, start="2018-01-01")           # ~10yr, whatever Alpaca gives
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     yrs = sorted(set(daily.index.year))
     L = [f"[TTP-HISTORY] {ts} - LIVE filtered ORB, {daily.index[0].date()}..{daily.index[-1].date()} "
