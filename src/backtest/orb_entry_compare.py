@@ -20,7 +20,7 @@ from src.strategies import filters
 from src.backtest.ttp_eval import sweep
 
 RISK = 0.0025                       # funded size we settled on
-FLEX = dict(target=0.06, daily_lim=0.02, max_loss=0.04, consist=0.50, min_pdays=3)
+FLEX = dict(target=0.06, daily_lim=0.02, max_loss=0.04, consist=0.50, min_pdays=3, horizon=252)
 H = 756
 
 
