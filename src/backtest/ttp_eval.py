@@ -14,14 +14,15 @@ from src.backtest import engine, research
 from src.strategies import filters, orb
 
 
-def live_daily_returns(cfg):
+def live_daily_returns(cfg, start=None, end=None):
     """Daily % return series of the LIVE filtered ORB config over the full backtest history."""
     live = cfg["live"]
     params = dict(live["params"])
     rs = cfg["research"]
-    end = rs.get("val_end") or datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    end = end or rs.get("val_end") or datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    start = start or rs["train_start"]
     risk_pct = float(cfg["risk"]["risk_pct"]) / 100.0            # 0.5 -> 0.005
-    bars = data_mod.fetch_bars(cfg["universe"], rs["train_start"], end,
+    bars = data_mod.fetch_bars(cfg["universe"], start, end,
                                timeframe=cfg["backtest"]["timeframe"], feed=cfg["backtest"]["feed"])
     bars = data_mod.rth_only(bars)
     groups = research.day_groups(bars)
