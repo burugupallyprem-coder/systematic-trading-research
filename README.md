@@ -134,9 +134,15 @@ the backtest match what live actually does.
   even the +0.018% figure. Roughly **two-thirds of the apparent edge was the look-ahead.**
 - **The process worked.** The leak was caught before any fee was paid; the live bot was never
   affected. **Live paper is now the ground truth.**
-- **Open question (being tested next):** does *any* causal ORB configuration — with/without the regime
-  gate, long-only vs base — have a real out-of-sample edge, judged **once** on a small pre-declared
-  grid (no overfitting)? If not, this family is honestly a dead end and we stop polishing it.
+- **Resolved (2026-08-13, `causal_edge_scan`):** a pre-declared filter ablation, judged once on OOS
+  pre-2024, confirms **DEAD END.** Bare breakout OOS Sharpe **−0.01** (no edge); relative-strength and
+  vol-floor *hurt* out-of-sample; only the causal regime gate carries any signal (OOS Sharpe 0.49) — and
+  that is essentially **conditional market-beta**, which loses in bears. No config clears a respectable
+  bar. The ORB is retired as a funded candidate; **live paper (always causal) is the ground truth.**
+- **Cross-audit (2026-08-13):** the gold daily-trend (`mgc_prop`), FX ORB (`strategy12_fx_orb`), and gold
+  ORB (`strategy11_gold_orb`) signal paths were audited for the same class of bug and are **causally
+  clean** — they anchor regime/trend to opening-range-only or prior-day windows and shift daily signals
+  by one bar. The stock ORB's regime filter was the only look-ahead in the codebase.
 
 *The 2026-08-12 log below is kept unedited for the record. Its ORB numbers are now known to be
 inflated by the look-ahead described above — read it as "before the correction."*
