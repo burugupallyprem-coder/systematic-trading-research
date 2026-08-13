@@ -62,9 +62,10 @@ def build_context(groups, cfg):
         early.setdefault(date, {})[symbol] = filters.early_return(day, ob)
         if symbol == "SPY":
             spy_days[date] = day
-    spy_long, spy_er = {}, {}
+    spy_long, spy_er, spy_break = {}, {}, {}
     for date, sday in spy_days.items():
         spy_long[date] = filters.spy_long_ok(sday, ob, cutoff)
+        spy_break[date] = filters.spy_break_minute(sday, ob, cutoff)   # causal timing gate
         spy_er[date] = filters.early_return(sday, ob)
     rs = {date: {s: er - spy_er.get(date, 0.0) for s, er in syms.items()}
           for date, syms in early.items()}
@@ -78,7 +79,7 @@ def build_context(groups, cfg):
             dt = d["date"].iloc[0]
             prev_close.setdefault(symbol, {})[dt] = pc
             pc = float(d["close"].iloc[-1])
-    return {"spy_long_ok": spy_long, "rs": rs, "prev_close": prev_close}
+    return {"spy_long_ok": spy_long, "spy_break_min": spy_break, "rs": rs, "prev_close": prev_close}
 
 
 def walk_forward_folds(dates, n_folds):

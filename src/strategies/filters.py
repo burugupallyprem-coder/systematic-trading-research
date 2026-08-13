@@ -50,6 +50,26 @@ def spy_long_ok(spy_day, open_bars, cutoff_et):
     return False
 
 
+def spy_break_minute(spy_day, open_bars, cutoff_et):
+    """CAUSAL regime timing: minute-of-day (ET) of SPY's FIRST close above its opening-range
+    high, before cutoff. None if SPY never breaks up before cutoff. Used to gate stock longs so
+    a long can only fire on/after the bar SPY itself confirmed - removes the future-SPY leak
+    where a single per-day boolean let an early entry 'know' SPY would break up later."""
+    if spy_day is None or len(spy_day) < open_bars + 1:
+        return None
+    rng = spy_day.iloc[:open_bars]
+    hi = float(rng["high"].max())
+    ch, cm = [int(x) for x in cutoff_et.split(":")]
+    for i in range(open_bars, len(spy_day)):
+        row = spy_day.iloc[i]
+        if _bar_time_ge(row, ch, cm):
+            break
+        if float(row["close"]) > hi:
+            t = row["et"].time()
+            return t.hour * 60 + t.minute
+    return None
+
+
 def early_return(day, open_bars):
     """Return over the opening range: (last-of-range close / first open) - 1.
     A lookahead-safe momentum proxy known by the end of the opening range."""

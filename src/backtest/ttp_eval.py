@@ -38,6 +38,7 @@ def live_daily_returns(cfg, start=None, end=None):
             if symbol not in allowed:
                 continue
         c = {"spy_long_ok": ctx["spy_long_ok"].get(date, False),
+             "spy_break_min": ctx.get("spy_break_min", {}).get(date),
              "prev_close": ctx.get("prev_close", {}).get(symbol, {}).get(date)}
         signals = orb.generate(day, params, c)
         if signals:
