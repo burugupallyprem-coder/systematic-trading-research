@@ -143,6 +143,13 @@ the backtest match what live actually does.
   ORB (`strategy11_gold_orb`) signal paths were audited for the same class of bug and are **causally
   clean** — they anchor regime/trend to opening-range-only or prior-day windows and shift daily signals
   by one bar. The stock ORB's regime filter was the only look-ahead in the codebase.
+- **Fresh-hypothesis hunt (2026-08-13):** with the ORB retired, two new ideas were tested against a
+  **buy-and-hold benchmark** (the anti-beta check the ORB failed). Daily **momentum on stocks** =
+  **beta** — VAL Sharpe 0.93 vs buy-and-hold 0.99, no drawdown benefit → rejected (`stock_momentum.py`).
+  Daily **trend on gold**, re-selected **hindsight-free** in a walk-forward, **beat buy-and-hold**:
+  Sharpe **1.14 vs 0.99**, maxDD **−19% vs −27%** (`mgc_prop/walk_forward_alpha.py`). The gold trend is
+  the one surviving candidate — a genuine drawdown-reduction edge (exactly what Apex rewards) — but on a
+  short single-regime sample; **forward-validate on paper before funding, do not deploy.**
 
 *The 2026-08-12 log below is kept unedited for the record. Its ORB numbers are now known to be
 inflated by the look-ahead described above — read it as "before the correction."*
