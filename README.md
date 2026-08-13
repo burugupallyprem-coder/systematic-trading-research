@@ -36,6 +36,13 @@ factor, walk-forward folds, cost sensitivity), judged **once** on an untouched v
 — i.e., it prevented deploying a losing strategy *before* a data-feed subscription or live risk.
 That "don't-fool-yourself" catch is the entire point.
 
+> **⚠️ 2026-08-13 correction:** the *Filtered ORB* row above, and the 2026-08-12 prop-firm log at the
+> bottom of this file, were affected by a **look-ahead bug in the market-regime filter** (since fixed).
+> The causal out-of-sample edge is materially weaker — **OOS Sharpe fell 1.57 → 0.46, FLEX 80% → 46%**,
+> and 2022 turns negative. Full write-up, before/after numbers, and charts are in the
+> **Correction & Research Log (2026-08-13)** section below. Finding this before funding an account is
+> the platform doing its job.
+
 ## What I built, how, and what happened
 - **Engineered a no-lookahead, event-driven backtest engine** (pandas/NumPy): signals never see
   the bar they trade on; stops checked before targets; gaps fill on the unfavorable side;
@@ -70,7 +77,73 @@ reproducibility, cost realism, and intellectual honesty about what does and does
 
 ---
 
-## Research Log — 2026-08-12: Prop-firm viability of the ORB (TTP stocks + Apex gold)
+## Correction & Research Log — 2026-08-13: a look-ahead bug found, fixed, and its real impact
+
+**Headline:** On 2026-08-12 I documented the ORB as a viable prop-firm edge (~80% FLEX, out-of-sample
+Sharpe 1.57). On 2026-08-13, prompted by a look-ahead audit, I found a **timing look-ahead in the
+market-regime filter** that was inflating those numbers. After fixing it, the out-of-sample edge
+roughly halves-to-thirds and turns **negative in the 2022 bear**. This is the platform working as
+designed — catching the illusion *before* a dollar of challenge fee was spent.
+
+### The bug — what it was
+The ORB only goes long when the market (SPY) is "breaking up." That regime flag was computed in
+`build_context()` as a **single per-day boolean**: *did SPY close above its opening range anytime
+before the 10:30 cutoff?* But a stock long can enter at, say, 10:05 — and the flag could be `True`
+only because SPY broke up at 10:20. So a 10:05 entry was being approved with SPY data from 10:20 —
+**future information**. The price/execution engine was already clean; the leak was purely in the
+*filter's timing*.
+
+```
+10:05  stock breaks out → decision made
+         ↑ but the per-day regime flag already "knew" SPY would confirm at 10:20 (the future)
+```
+
+### How it was found
+An interview-style check from a mentor: *"when the strategy decides on bar 10, does its INPUT contain
+any bar-11+ information?"* Auditing the whole signal path — `orb.generate` → `build_context` →
+`filters.spy_long_ok` — showed the regime boolean scanned SPY all the way to 10:30, decoupled from
+each trade's actual entry time. The execution engine passed the audit; the regime *input* did not.
+
+### The fix — make the gate causal
+`filters.spy_break_minute()` now records the **exact minute SPY first breaks up**, and `orb.generate`
+allows a long **only on/after that minute**. A stock long can no longer fire before SPY has actually
+confirmed. Proven with a unit case: stock breaks 09:45, SPY confirms 10:00 → the old gate entered at
+09:50 (look-ahead), the fixed gate waits and enters 10:05 (causal). Note the **live bot was already
+causal** (it checks SPY "so far" each poll), so only the *backtest* was optimistic — this fix makes
+the backtest match what live actually does.
+
+### Before vs after (causal), 2020-07 → 2026-08
+
+![ORB avg daily return by year, before vs after the look-ahead fix](docs/lookahead_year_by_year.png)
+
+![Out-of-sample Sharpe, FLEX pass, and breach rate before vs after the fix](docs/lookahead_oos_metrics.png)
+
+| Metric | Before (look-ahead) | After (causal) |
+|---|---|---|
+| OOS pre-2024 avg daily | +0.067% | **+0.018%** |
+| OOS pre-2024 Sharpe | 1.57 | **0.46** |
+| OOS pre-2024 FLEX pass | 80% | **46%** |
+| OOS pre-2024 max drawdown | −9.3% | **−19.6%** |
+| 2022 bear (avg daily / maxDD) | +0.014% / −7.8% | **−0.056% / −15.2%** |
+| Overall FLEX (full period) | 80.4% | **55.6%** |
+| Time-to-fund @0.25% (median / breach) | 138d / 1.3% | **246d / 18.5%** |
+
+### Honest conclusion (this supersedes the 2026-08-12 log below)
+- **Do not fund a TTP account on the ORB as it stands.** The causal out-of-sample edge is marginal
+  (Sharpe ~0.46), it **loses in bear markets** (2022: −15% drawdown), and survivorship bias inflates
+  even the +0.018% figure. Roughly **two-thirds of the apparent edge was the look-ahead.**
+- **The process worked.** The leak was caught before any fee was paid; the live bot was never
+  affected. **Live paper is now the ground truth.**
+- **Open question (being tested next):** does *any* causal ORB configuration — with/without the regime
+  gate, long-only vs base — have a real out-of-sample edge, judged **once** on a small pre-declared
+  grid (no overfitting)? If not, this family is honestly a dead end and we stop polishing it.
+
+*The 2026-08-12 log below is kept unedited for the record. Its ORB numbers are now known to be
+inflated by the look-ahead described above — read it as "before the correction."*
+
+---
+
+## Research Log — 2026-08-12 (SUPERSEDED — ORB numbers inflated by the look-ahead fixed on 2026-08-13; kept for the record)
 
 A full day of pre-registration-style testing to answer one question: **can the live ORB fund a
 prop account, and at what size / speed / risk?** Every result below is RESEARCH ONLY, run in CI on
