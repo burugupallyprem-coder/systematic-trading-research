@@ -3,7 +3,7 @@
   "halt_today": false,
   "skip_symbols": [],
   "gaps": {
-    "SPY": -0.0,
+    "SPY": 0.2,
     "QQQ": 0.04,
     "AAPL": 0.0,
     "MSFT": 0.45,
