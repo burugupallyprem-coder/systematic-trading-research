@@ -2,6 +2,6 @@
   "armed": true,
   "verdict": "PASS",
   "reason": "a config cleared the single-window gate AND walk-forward",
-  "updated_utc": "2026-08-15 13:48 UTC",
+  "updated_utc": "2026-07-18 14:33 UTC",
   "note": "Consumed by trader entry session only when config arming.mode == 'auto'."
 }
