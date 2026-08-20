@@ -2,12 +2,6 @@
  "runs": [
   {
    "wf": "premarket",
-   "utc": "2026-08-06 11:52",
-   "ok": true,
-   "outcome": "success"
-  },
-  {
-   "wf": "premarket",
    "utc": "2026-08-06 12:31",
    "ok": true,
    "outcome": "success"
@@ -597,6 +591,12 @@
   {
    "wf": "trade-eod",
    "utc": "2026-08-20 19:45",
+   "ok": true,
+   "outcome": "success"
+  },
+  {
+   "wf": "trade-eod",
+   "utc": "2026-08-20 19:47",
    "ok": true,
    "outcome": "success"
   }
