@@ -28,19 +28,19 @@
   .banner { border:1px solid var(--amber); color:var(--amber); border-radius:8px; padding:8px 12px; margin-bottom:18px; font-size:12px; letter-spacing:1px; }
 </style></head><body>
 <h1>STOCK-TRADER-BOT <span style="color:var(--mut)">//</span> MISSION CONTROL</h1>
-<div class="sub">generated 2026-08-26 23:32Z · refresh: run dashboard.ps1 (git pull + reopen)</div>
+<div class="sub">generated 2026-08-27 19:55Z · refresh: run dashboard.ps1 (git pull + reopen)</div>
 <div class="banner">PAPER ACCOUNT ONLY · LIVE ENDPOINT CODE-LOCKED · CANDIDATE (paper trial): filtered ORB (PASS 2026-07-18 - backtest edge, 21-session trial) · premarket guard: log_only</div>
 <div class="grid">
   <div class="card"><h2>PIPELINE STATUS</h2>
     <div class="row"><span>premarket briefing</span><span><span class="dot green"></span><span class="mut">2026-08-26 13:29Z</span></span></div>
     <div class="row"><span>entry session</span><span><span class="dot green"></span><span class="mut">2026-08-26 14:32Z</span></span></div>
-    <div class="row"><span>eod flatten</span><span><span class="dot green"></span><span class="mut">2026-08-26 23:32Z</span></span></div>
+    <div class="row"><span>eod flatten</span><span><span class="dot green"></span><span class="mut">2026-08-27 19:55Z</span></span></div>
     <div class="row"><span>research sweep</span><span><span class="dot gray"></span><span class="mut">no runs yet</span></span></div>
   </div>
   <div class="card"><h2>ACCOUNT (PAPER)</h2>
-    <div class="big">$101,176</div>
-    <div class="row"><span>last day P&amp;L</span><span>-386</span></div>
-    <div class="row"><span>total since start</span><span>+1,176</span></div>
+    <div class="big">$101,175</div>
+    <div class="row"><span>last day P&amp;L</span><span>+0</span></div>
+    <div class="row"><span>total since start</span><span>+1,175</span></div>
     <canvas id="eq" height="110"></canvas>
   </div>
   <div class="card"><h2>TODAY // PRE-MARKET</h2>
@@ -55,13 +55,13 @@
     <div class="row"><span>risk / trade</span><span>0.5% · max 3 positions</span></div>
   </div>
   <div class="card"><h2>LATEST RESEARCH VERDICTS</h2><table><tr><td>orb</td><td class="ok">PASS</td></tr><tr><td>vwap_revert</td><td class="bad">FAIL</td></tr><tr><td>momentum</td><td class="bad">FAIL</td></tr></table></div>
-  <div class="card"><h2>RECENT RUNS</h2><table><tr><td>trade-eod</td><td>2026-08-26 23:32Z</td><td class="ok">success</td></tr><tr><td>trade-eod</td><td>2026-08-26 22:31Z</td><td class="ok">success</td></tr><tr><td>trade-eod</td><td>2026-08-26 22:27Z</td><td class="ok">success</td></tr><tr><td>trade-eod</td><td>2026-08-26 22:13Z</td><td class="ok">success</td></tr><tr><td>trade-eod</td><td>2026-08-26 21:47Z</td><td class="ok">success</td></tr><tr><td>trade-eod</td><td>2026-08-26 21:10Z</td><td class="ok">success</td></tr><tr><td>trade-eod</td><td>2026-08-26 19:45Z</td><td class="ok">success</td></tr><tr><td>trade-entry</td><td>2026-08-26 14:32Z</td><td class="ok">success</td></tr><tr><td>premarket</td><td>2026-08-26 13:29Z</td><td class="ok">success</td></tr><tr><td>premarket</td><td>2026-08-26 12:30Z</td><td class="ok">success</td></tr><tr><td>trade-eod</td><td>2026-08-25 20:45Z</td><td class="ok">success</td></tr><tr><td>trade-eod</td><td>2026-08-25 20:11Z</td><td class="ok">success</td></tr></table></div>
+  <div class="card"><h2>RECENT RUNS</h2><table><tr><td>trade-eod</td><td>2026-08-27 19:55Z</td><td class="ok">success</td></tr><tr><td>trade-eod</td><td>2026-08-26 23:32Z</td><td class="ok">success</td></tr><tr><td>trade-eod</td><td>2026-08-26 22:31Z</td><td class="ok">success</td></tr><tr><td>trade-eod</td><td>2026-08-26 22:27Z</td><td class="ok">success</td></tr><tr><td>trade-eod</td><td>2026-08-26 22:13Z</td><td class="ok">success</td></tr><tr><td>trade-eod</td><td>2026-08-26 21:47Z</td><td class="ok">success</td></tr><tr><td>trade-eod</td><td>2026-08-26 21:10Z</td><td class="ok">success</td></tr><tr><td>trade-eod</td><td>2026-08-26 19:45Z</td><td class="ok">success</td></tr><tr><td>trade-entry</td><td>2026-08-26 14:32Z</td><td class="ok">success</td></tr><tr><td>premarket</td><td>2026-08-26 13:29Z</td><td class="ok">success</td></tr><tr><td>premarket</td><td>2026-08-26 12:30Z</td><td class="ok">success</td></tr><tr><td>trade-eod</td><td>2026-08-25 20:45Z</td><td class="ok">success</td></tr></table></div>
 </div>
 <script>
 try {
   const ctx = document.getElementById("eq");
   new Chart(ctx, { type:"line",
-    data: { labels: ["2026-07-10", "2026-07-13", "2026-07-10", "2026-07-17", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24", "2026-07-27", "2026-07-28", "2026-07-29", "2026-07-30", "2026-07-31", "2026-08-03", "2026-08-04", "2026-08-05", "2026-08-07", "2026-08-10", "2026-08-11", "2026-08-12", "2026-08-13", "2026-08-14", "2026-08-17", "2026-08-18", "2026-08-19", "2026-08-20", "2026-08-21", "2026-08-24", "2026-08-25", "2026-08-26"], datasets: [{ data: [100150.0, 100095.0, 100100.0, 99793.22, 99793.43, 99637.84, 99637.84, 99886.54, 100715.02, 100714.93, 100714.93, 100714.93, 100714.93, 100714.93, 101393.65, 101393.62, 102345.18, 102434.85, 102433.47, 102433.47, 102126.49, 101563.49, 101562.19, 101562.19, 101562.19, 101562.19, 101562.19, 101562.19, 101562.19, 101176.49], borderColor:"#28e0ff",
+    data: { labels: ["2026-07-10", "2026-07-13", "2026-07-10", "2026-07-17", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24", "2026-07-27", "2026-07-28", "2026-07-29", "2026-07-30", "2026-07-31", "2026-08-03", "2026-08-04", "2026-08-05", "2026-08-07", "2026-08-10", "2026-08-11", "2026-08-12", "2026-08-13", "2026-08-14", "2026-08-17", "2026-08-18", "2026-08-19", "2026-08-20", "2026-08-21", "2026-08-24", "2026-08-25", "2026-08-26", "2026-08-27"], datasets: [{ data: [100150.0, 100095.0, 100100.0, 99793.22, 99793.43, 99637.84, 99637.84, 99886.54, 100715.02, 100714.93, 100714.93, 100714.93, 100714.93, 100714.93, 101393.65, 101393.62, 102345.18, 102434.85, 102433.47, 102433.47, 102126.49, 101563.49, 101562.19, 101562.19, 101562.19, 101562.19, 101562.19, 101562.19, 101562.19, 101176.49, 101175.18], borderColor:"#28e0ff",
       backgroundColor:"rgba(40,224,255,.08)", fill:true, tension:.3, pointRadius:2 }] },
     options: { plugins: { legend: { display:false } },
       scales: { x: { ticks: { color:"#5b7186" }, grid: { color:"#1c2a3f" } },
