@@ -1,6 +1,24 @@
 {
  "runs": [
   {
+   "wf": "trade-eod",
+   "utc": "2026-08-14 20:45",
+   "ok": true,
+   "outcome": "success"
+  },
+  {
+   "wf": "premarket",
+   "utc": "2026-08-17 12:30",
+   "ok": true,
+   "outcome": "success"
+  },
+  {
+   "wf": "premarket",
+   "utc": "2026-08-17 13:11",
+   "ok": true,
+   "outcome": "success"
+  },
+  {
    "wf": "trade-entry",
    "utc": "2026-08-17 14:32",
    "ok": true,
@@ -577,26 +595,8 @@
    "outcome": "success"
   },
   {
-   "wf": "premarket",
-   "utc": "2026-08-31 17:14",
-   "ok": true,
-   "outcome": "success"
-  },
-  {
-   "wf": "premarket",
-   "utc": "2026-08-31 17:43",
-   "ok": true,
-   "outcome": "success"
-  },
-  {
-   "wf": "premarket",
-   "utc": "2026-08-31 18:09",
-   "ok": true,
-   "outcome": "success"
-  },
-  {
-   "wf": "premarket",
-   "utc": "2026-08-31 19:09",
+   "wf": "trade-eod",
+   "utc": "2026-08-31 19:45",
    "ok": true,
    "outcome": "success"
   }
