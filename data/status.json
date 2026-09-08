@@ -1,12 +1,6 @@
 {
  "runs": [
   {
-   "wf": "trade-entry",
-   "utc": "2026-08-29 02:49",
-   "ok": true,
-   "outcome": "success"
-  },
-  {
    "wf": "premarket",
    "utc": "2026-08-31 17:14",
    "ok": true,
@@ -597,6 +591,12 @@
   {
    "wf": "premarket",
    "utc": "2026-09-08 14:47",
+   "ok": true,
+   "outcome": "success"
+  },
+  {
+   "wf": "trade-entry",
+   "utc": "2026-09-08 15:17",
    "ok": true,
    "outcome": "success"
   }
