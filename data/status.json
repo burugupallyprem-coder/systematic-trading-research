@@ -1,12 +1,6 @@
 {
  "runs": [
   {
-   "wf": "trade-entry",
-   "utc": "2026-09-03 16:58",
-   "ok": true,
-   "outcome": "success"
-  },
-  {
    "wf": "trade-eod",
    "utc": "2026-09-03 19:45",
    "ok": true,
@@ -597,6 +591,12 @@
   {
    "wf": "trade-entry",
    "utc": "2026-09-11 16:44",
+   "ok": false,
+   "outcome": "failure"
+  },
+  {
+   "wf": "trade-entry",
+   "utc": "2026-09-11 16:57",
    "ok": false,
    "outcome": "failure"
   }
